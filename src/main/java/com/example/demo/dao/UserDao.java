@@ -10,32 +10,31 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+//import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
-@RepositoryRestResource(path = "user")
+//@RepositoryRestResource(path = "user")
 public interface UserDao extends JpaRepository<TUser, Long>, JpaSpecificationExecutor<TUser> {
     Optional<TUser> findById(Long id);
 
-    Page<TUser> findAll(Pageable pageable, Sort sort);
+    Page<TUser> findAll(Pageable pageable);
 
-    @Query("SELECT f FROM Foo f WHERE LOWER(f.name) = LOWER(:name)")
-    TUser retrieveByName(@Param("name") String name);
-
-    @Modifying
-    @Query("update User u set u.status = :status where u.name = :name")
-    int updateUserSetStatusForName(@Param("status") Integer status,
-                                   @Param("name") String name);
+    @Query("SELECT u FROM TUser u WHERE LOWER(u.username) = LOWER(:username)")
+    TUser retrieveByUsername(@Param("username") String username);
 
     @Modifying
-    @Query(value = "insert into Users (name, age, email, status) values (:name, :age, :email, :status)",
-            nativeQuery = true)
-    void insertUser(@Param("name") String name, @Param("age") Integer age,
-                    @Param("status") Integer status, @Param("email") String email);
+    @Query("update TUser u set u.gender = :gender where u.username = :username")
+    int updateUserSetStatusForName(@Param("gender") Integer gender,
+                                   @Param("username") String username);
+
+//    @Modifying
+//    @Query(value = "insert into Users (name, age, email, status) values (:name, :age, :email, :status)",
+//            nativeQuery = true)
+//    void insertUser(@Param("name") String name, @Param("age") Integer age,
+//                    @Param("status") Integer status, @Param("email") String email);
 
     long count(Specification<TUser> conn);
 }

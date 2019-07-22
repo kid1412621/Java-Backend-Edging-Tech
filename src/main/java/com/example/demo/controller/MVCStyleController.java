@@ -1,18 +1,19 @@
-package com.example.demo.ctrlr;
+package com.example.demo.controller;
 
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+/**
+ * it's akin to spring webmvc,
+ * but it actually is webflux reactive controller
+ */
 @RestController
-@RequestMapping("/t")
-public class TstCtrlr {
-    @GetMapping(value = "/2", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+@RequestMapping("/mvc")
+public class MVCStyleController {
+    @GetMapping(value = "/ok", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
 //    @Secured("ROLE_USER")
     public Mono<String> oj8k() {
         return Mono.just("oj8k");
