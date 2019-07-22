@@ -5,7 +5,6 @@ import com.example.demo.model.TUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -19,6 +18,11 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 public class WebFluxController {
     @Autowired
     private UserDao userDao;
+
+    Mono<ServerResponse> addOne(ServerRequest request) {
+        TUser user = userDao.save(TUser.builder().username("haha").email("xxx").mobile("343").gender(1).build());
+        return ok().build();
+    }
 
     Mono<ServerResponse> getOne(ServerRequest request) {
         long id = Long.parseLong(request.pathVariable("id"));

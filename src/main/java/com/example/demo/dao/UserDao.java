@@ -3,21 +3,23 @@ package com.example.demo.dao;
 import com.example.demo.model.TUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-//import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+//import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
 @Repository
 //@RepositoryRestResource(path = "user")
 public interface UserDao extends JpaRepository<TUser, Long>, JpaSpecificationExecutor<TUser> {
+    TUser save(TUser user);
+
     Optional<TUser> findById(Long id);
 
     Page<TUser> findAll(Pageable pageable);

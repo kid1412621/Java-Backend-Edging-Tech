@@ -6,22 +6,25 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)// jpa auditing
 @Table(name = "t_user", schema = "demo")
 @Data
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
 //@NoArgsConstructor
-public class TUser {
+public class TUser implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer gender;
     private String username;
@@ -29,8 +32,8 @@ public class TUser {
     private String email;
     @CreatedDate
     private Timestamp createTime;
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate //  jpa auditing
+    @Temporal(TemporalType.TIMESTAMP)// mapping SQL date type
     private Date updateTime;
 
 

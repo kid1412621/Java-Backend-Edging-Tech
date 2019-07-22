@@ -20,6 +20,7 @@ public class WebFluxRoute {
         return RouterFunctions.route()
                 .path("/user", builder -> builder
                         .nest(accept(APPLICATION_JSON), nb -> nb
+                                .GET("/add", req -> ctrlr1.addOne(req))
                                 .GET("/one/{id}", req -> ctrlr1.getOne(req))
                                 .POST("/all", req -> ctrlr1.getAll(req))
                         )
