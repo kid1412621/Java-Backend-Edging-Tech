@@ -3,8 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.TUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -37,4 +40,33 @@ public class WebFluxController {
     }
 
 
+    Mono<ServerResponse> getOneByEmail(ServerRequest req) {
+        Optional<TUser> user = userDao.findByEmail(req.queryParam("email").get());
+        return ok().body(Mono.just(user.get()), TUser.class);
+    }
+
+    Mono<ServerResponse> getOneByUsername(ServerRequest req) {
+        Optional<TUser> user = userDao.retrieveByUsername(req.queryParam("username").get());
+        return ok().body(Mono.just(user.get()), TUser.class);
+    }
+
+    Mono<ServerResponse> updateGenderByUsername(ServerRequest req) {
+        int c = userDao.updateGenderForName(Integer.valueOf(req.queryParam("gender").get()),
+                req.queryParam("username").get());
+        return ok().body(Mono.just(c), Integer.class);
+
+    }
+
+    @Transactional()
+    Mono<ServerResponse> addByUsername(ServerRequest req) {
+        userDao.insertUser("username", "12345");
+        return ok().build();
+    }
+
+    Mono<ServerResponse> find(ServerRequest req) {
+        Example<TUser> userExample = Example.of(TUser.builder().username("xXx").gender(1).build(),
+                ExampleMatcher.matchingAll().withIgnoreCase());
+        Optional<TUser> user = userDao.findOne(userExample);
+        return ok().body(Mono.just(user.get()), TUser.class);
+    }
 }

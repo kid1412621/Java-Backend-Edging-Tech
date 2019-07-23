@@ -22,7 +22,12 @@ public class WebFluxRoute {
                         .nest(accept(APPLICATION_JSON), nb -> nb
                                 .GET("/add", req -> ctrlr1.addOne(req))
                                 .GET("/one/{id}", req -> ctrlr1.getOne(req))
+                                .GET("/oneByEmail", req -> ctrlr1.getOneByEmail(req))
+                                .POST("/oneByUsername", req -> ctrlr1.getOneByUsername(req))
+                                .GET("/editGenderByUsername", req -> ctrlr1.updateGenderByUsername(req))
+                                .GET("/addByUsername", req -> ctrlr1.addByUsername(req))
                                 .POST("/all", req -> ctrlr1.getAll(req))
+                                .GET("/find", req -> ctrlr1.find(req))
                         )
                 )
                 .build();
