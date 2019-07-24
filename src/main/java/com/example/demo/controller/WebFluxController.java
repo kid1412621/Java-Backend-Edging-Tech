@@ -2,12 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.TUser;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -21,6 +21,8 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 public class WebFluxController {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private UserService userService;
 
     Mono<ServerResponse> addOne(ServerRequest request) {
         TUser user = userDao.save(TUser.builder().username("haha").email("xxx").mobile("343").gender(1).build());
@@ -57,7 +59,6 @@ public class WebFluxController {
 
     }
 
-    @Transactional()
     Mono<ServerResponse> addByUsername(ServerRequest req) {
         userDao.insertUser("username", "12345");
         return ok().build();
@@ -68,5 +69,12 @@ public class WebFluxController {
                 ExampleMatcher.matchingAll().withIgnoreCase());
         Optional<TUser> user = userDao.findOne(userExample);
         return ok().body(Mono.just(user.get()), TUser.class);
+    }
+
+    Mono<ServerResponse> testTx(ServerRequest req) {
+        userService.editById(100L);
+        userService.addTwo(Boolean.valueOf(req.queryParam("isTry").get()));
+        userService.editById(99L);
+        return ok().build();
     }
 }

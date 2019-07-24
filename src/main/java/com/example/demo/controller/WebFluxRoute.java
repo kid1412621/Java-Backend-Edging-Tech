@@ -28,6 +28,7 @@ public class WebFluxRoute {
                                 .GET("/addByUsername", req -> ctrlr1.addByUsername(req))
                                 .POST("/all", req -> ctrlr1.getAll(req))
                                 .GET("/find", req -> ctrlr1.find(req))
+                                .GET("/tx", req -> ctrlr1.testTx(req))
                         )
                 )
                 .build();
