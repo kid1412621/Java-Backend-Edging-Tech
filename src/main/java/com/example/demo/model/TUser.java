@@ -16,6 +16,7 @@ import java.util.Objects;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)// jpa auditing
+//@NoArgsConstructor //to use version-based optimistic locking should turn this on
 @Table(name = "t_user", schema = "demo")
 @Data
 @Builder
