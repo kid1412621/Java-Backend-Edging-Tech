@@ -11,7 +11,6 @@ public class DemoApplicationTests {
 
     @Test
     public void contextLoads() {
-        // assert(1==1,true)
     }
 
 }
